@@ -4,17 +4,19 @@
 import zlib
 import random
 
-# Test entropy by zlibping
+# Test data entropy by compressing it
 def test_entropy(infoText, data):
-    print(infoText + repr(len(zlib.compress(bytes(data)))))
+    print(infoText + repr(len(zlib.compress(bytes(data), zlib.Z_BEST_COMPRESSION))))
 
-# Create a non-shuffled deck of 52 cards
-deck = [i for i in range(52)]
+deck_size = 52000
 
-# Test its entropy by calling zlib on it!
-test_entropy("52 zeroes: ", [0 for i in range(52)])
-test_entropy("Random: ", [round(random.random() * 52) for i in range(52)])
-test_entropy("Non-shuffled deck zlibped: ", deck)
+# Create a non-shuffled deck of deck_size cards
+deck = [i % 256 for i in range(deck_size)]
+
+# All zeroes and random numbers (for reference)
+test_entropy(str(deck_size) + " zeroes: ", [0 for i in range(deck_size)])
+test_entropy(str(deck_size) + " random bytes: ", [round(random.random() * 255) for i in range(deck_size)])
+test_entropy("Non-shuffled deck: ", deck)
 
 # Put cards into five piles
 deck5pi = [[], [], [], [], []]
