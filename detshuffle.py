@@ -1,19 +1,20 @@
 # Shuffle a deck of cards in a deterministic way and measure entropy of such a shuffling.
 # Alexander Ivashkin, 2018
-import gzip
+
+import zlib
 import random
 
-# Test entropy by gzipping
+# Test entropy by zlibping
 def test_entropy(infoText, data):
-    print(infoText + repr(len(gzip.compress(bytes(data)))))
+    print(infoText + repr(len(zlib.compress(bytes(data)))))
 
 # Create a non-shuffled deck of 52 cards
 deck = [i for i in range(52)]
 
-# Test its entropy by calling gzip on it!
+# Test its entropy by calling zlib on it!
 test_entropy("52 zeroes: ", [0 for i in range(52)])
 test_entropy("Random: ", [round(random.random() * 52) for i in range(52)])
-test_entropy("Non-shuffled deck gzipped: ", deck)
+test_entropy("Non-shuffled deck zlibped: ", deck)
 
 # Put cards into five piles
 deck5pi = [[], [], [], [], []]
