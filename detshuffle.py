@@ -9,22 +9,26 @@ import secrets
 deck_size = 65536
 deck = [i for i in range(deck_size)]
 
-def word_to_bytes(data):
-    """Convert words (i.e. integers 0-65535) into bytes"""
+def word_to_byte(data):
+    """Generator function to convert words (i.e. integers 0-65535) into two
+    integers representing bytes"""
+    for wr in data:
+        yield wr // 256
+        yield wr % 256
+
 
 def get_entropy(data):
     """Calculate entropy of data by zlib'bing it"""
     cmpr = zlib.compressobj(level = 9, wbits = -15, memLevel = 9)
-    # Convert two-byte data to bytes using String.encode()
-    bdata = ''.join(chr(data[i]) for i in range(len(data))).encode()
-    return len(cmpr.compress(bytes(bdata)) + cmpr.flush())
+    # bdata = ''.join(chr(data[i]) for i in range(len(data))).encode()
+    return len(cmpr.compress(bytes(list(word_to_byte(data)))) + cmpr.flush())
 
 
 ordered_deck_entropy = get_entropy(deck)
 
 # To ensure same results on each run
 random.seed(666)
-random_deck_entropy = get_entropy([secrets.randbelow(deck_siez) for i in range(deck_size)])
+random_deck_entropy = get_entropy([secrets.randbelow(deck_size) for i in range(deck_size)])
 
 def test_entropy(infoText, data):
     """Test data entropy by compressing it with zlib"""
