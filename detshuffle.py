@@ -6,20 +6,25 @@ import random
 import secrets
 
 # Create a non-shuffled deck of deck_size cards
-deck_size = 256
-deck = [i % 256 for i in range(deck_size)]
+deck_size = 65536
+deck = [i for i in range(deck_size)]
+
+def word_to_bytes(data):
+    """Convert words (i.e. integers 0-65535) into bytes"""
 
 def get_entropy(data):
-    """Calculate entropy of Unicode data by zlib'bing it"""
-    cmpr = zlib.compressobj(level = 9, wbits = -15, memLevel = 9, zdict = bytes(deck))
-    return len(cmpr.compress(bytes(data)) + cmpr.flush())
+    """Calculate entropy of data by zlib'bing it"""
+    cmpr = zlib.compressobj(level = 9, wbits = -15, memLevel = 9)
+    # Convert two-byte data to bytes using String.encode()
+    bdata = ''.join(chr(data[i]) for i in range(len(data))).encode()
+    return len(cmpr.compress(bytes(bdata)) + cmpr.flush())
 
 
 ordered_deck_entropy = get_entropy(deck)
 
 # To ensure same results on each run
 random.seed(666)
-random_deck_entropy = get_entropy([round(random.random() * 255) for i in range(deck_size)])
+random_deck_entropy = get_entropy([secrets.randbelow(deck_siez) for i in range(deck_size)])
 
 def test_entropy(infoText, data):
     """Test data entropy by compressing it with zlib"""
@@ -32,6 +37,7 @@ def test_entropy(infoText, data):
 test_entropy("'0'", [0 for i in range(deck_size)])
 # test_entropy(str(deck_size) + " random bytes: ", )
 test_entropy("non-shuffled", deck)
+test_entropy("random.random()", [random.randrange(0, deck_size) for i in range(deck_size)])
 
 # Put cards into five piles
 # NB: this is not the most efficient code, but I'm writing it to learn different features of Python
