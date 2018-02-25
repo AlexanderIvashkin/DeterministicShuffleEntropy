@@ -10,9 +10,9 @@ deck_size = 256
 deck = [i for i in range(deck_size)]
 
 def get_entropy(data):
-    return len(cmpr.compress(bytes(data)) + cmpr.flush())
     """Calculate entropy of data by zlib'bing it"""
     cmpr = zlib.compressobj(level = 9, wbits = -15, memLevel = 9)
+    return len(cmpr.compress(bytes(data)) + cmpr.flush())
 
 
 ordered_deck_entropy = get_entropy(deck)
