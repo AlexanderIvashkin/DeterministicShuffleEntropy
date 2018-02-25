@@ -20,7 +20,6 @@ def word_to_byte(data):
 def get_entropy(data):
     """Calculate entropy of data by zlib'bing it"""
     cmpr = zlib.compressobj(level = 9, wbits = -15, memLevel = 9)
-    # bdata = ''.join(chr(data[i]) for i in range(len(data))).encode()
     return len(cmpr.compress(bytes(list(word_to_byte(data)))) + cmpr.flush())
 
 
@@ -34,7 +33,8 @@ def test_entropy(infoText, data):
     """Test data entropy by compressing it with zlib"""
     entropy = get_entropy(data)
     print("{} of {} cards: entropy measure {}, {:.1f}% ordered / {:.1f}% random".format(
-        deck_size, infoText, entropy, entropy / ordered_deck_entropy * 100, entropy / random_deck_entropy * 100))
+        deck_size, infoText, entropy, entropy / ordered_deck_entropy * 100,
+        entropy / random_deck_entropy * 100))
 
 
 # All zeroes and random numbers (for reference)
