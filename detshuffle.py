@@ -19,7 +19,7 @@ ordered_deck_entropy = get_entropy(deck)
 
 # To ensure same results on each run
 random.seed(666)
-random_deck_entropy = get_entropy([secrets.randbelow(deck_size) for i in range(deck_size)])
+random_deck_entropy = get_entropy([random.randrange(0, deck_size) for i in range(deck_size)])
 
 def test_entropy(infoText, data):
     """Test data entropy by compressing it with zlib"""
@@ -33,7 +33,7 @@ def test_entropy(infoText, data):
 test_entropy("'0'", [0 for i in range(deck_size)])
 # test_entropy(str(deck_size) + " random bytes: ", )
 test_entropy("non-shuffled", deck)
-test_entropy("random.random()", [random.randrange(0, deck_size) for i in range(deck_size)])
+test_entropy("secrets.randbelow()", [secrets.randbelow(deck_size) for i in range(deck_size)])
 
 # Put cards into five piles
 # NB: this is not the most efficient code, but I'm writing it to learn different features of Python
