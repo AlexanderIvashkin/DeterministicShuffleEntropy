@@ -7,7 +7,7 @@ from bokeh.plotting import figure, output_file, show
 from bokeh.layouts import gridplot
 
 plots = []
-def entropy_plot(data, title):
+def entropy(data, title):
     """Add a new circle plot into the list of Bokeh plots to visualise entropy"""
     plot = figure(title = title)
     plot.circle([i for i in range(len(data))], data)
@@ -22,16 +22,15 @@ def perfect_riffle_shuffle(deck):
 deck_size = 52
 deck = [i for i in range(1, deck_size + 1)]
 
-entropy_plot(deck, "Ordered deck")
+entropy(deck, "Ordered deck")
 
 # To ensure same results on each run
 random.seed(666)
-entropy_plot([random.randrange(0, deck_size)
+entropy([random.randrange(0, deck_size)
     for i in range(deck_size)], "random.random()")
 
-# All zeroes and random numbers (for reference)
-entropy_plot([0] * deck_size, "All 0's")
-entropy_plot([secrets.randbelow(deck_size)
+entropy([1] * deck_size, "All 1's")
+entropy([secrets.randbelow(deck_size)
     for i in range(deck_size)], "secrets.randbelow()")
 
 # Put cards into five piles
@@ -40,7 +39,7 @@ deck5pi = [[], [], [], [], []]
 for card in range(len(deck)):
     deck5pi[card % 5].append(deck[card])
 
-entropy_plot([deck5pi[p][c] for p in range(5)
+entropy([deck5pi[p][c] for p in range(5)
     for c in range(len(deck5pi[p]))], "'into five piles'")
 
 # Ten piles
@@ -48,11 +47,11 @@ deck10pi = [[], [], [], [], [], [], [], [], [], []]
 for card in range(len(deck)):
     deck10pi[card % 10].append(deck[card])
 
-entropy_plot([deck10pi[p][c] for p in range(10)
+entropy([deck10pi[p][c] for p in range(10)
     for c in range(len(deck10pi[p]))], "'into ten piles'")
 
-# One riffle shuffle
-entropy_plot(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
+# Perfect riffle shuffle
+entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
 
 
 # Show the combined plot!
