@@ -8,10 +8,15 @@ from bokeh.layouts import gridplot
 
 plots = []
 def entropy_plot(data, title):
-    """Add a new Bokeh plot into the list of plots to visualise entropy"""
+    """Add a new circle plot into the list of Bokeh plots to visualise entropy"""
     plot = figure(title = title)
     plot.circle([i for i in range(len(data))], data)
     plots.append(plot)
+
+def perfect_riffle_shuffle(deck):
+    """Run one perfect (deterministic) riffle shuffle on the deck"""
+    return [deck[(c % 2) * 5 + c // 2] for c in range(len(deck))]
+
 
 # Create a non-shuffled deck of deck_size cards
 deck_size = 52
@@ -47,7 +52,7 @@ entropy_plot([deck10pi[p][c] for p in range(10)
     for c in range(len(deck10pi[p]))], "'into ten piles'")
 
 # One riffle shuffle
-
+entropy_plot(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
 
 
 # Show the combined plot!
