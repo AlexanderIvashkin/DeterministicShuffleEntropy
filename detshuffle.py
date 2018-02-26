@@ -8,7 +8,7 @@ from bokeh.layouts import gridplot
 
 plots = []
 def entropy_plot(data, title):
-    """Visualise entropy of data with bokeh scatter plot"""
+    """Add a new Bokeh plot into the list of plots to visualise entropy"""
     plot = figure(title = title)
     plot.circle([i for i in range(len(data))], data)
     plots.append(plot)
@@ -51,6 +51,6 @@ entropy_plot([deck10pi[p][c] for p in range(10)
 
 
 # Show the combined plot!
-output_file("entropy.html")
-combined = gridplot([plots])
+output_file("entropy.html", mode="inline")
+combined = gridplot(plots, ncols = 2)
 show(combined)
