@@ -13,9 +13,10 @@ def entropy(data, title):
     plot.circle([i for i in range(len(data))], data)
     plots.append(plot)
 
-def perfect_riffle_shuffle(deck):
-    """Run one perfect (deterministic) riffle shuffle on the deck"""
-    return [deck[(c % 2) * 5 + c // 2] for c in range(len(deck))]
+def perfect_riffle_shuffle(deck, times = 1):
+    """Run perfect (deterministic) riffle shuffle on the deck one or more times"""
+    # TODO for sfl in range(times):
+    # TODO return [deck[(c % 2) * 5 + c // 2] for c in range(len(deck))]
 
 
 # Create a non-shuffled deck of deck_size cards
@@ -26,12 +27,15 @@ entropy(deck, "Ordered deck")
 
 # To ensure same results on each run
 random.seed(666)
-entropy([random.randrange(0, deck_size)
-    for i in range(deck_size)], "random.random()")
+randdeck = deck[:]
+random.shuffle(randdeck)
+entropy(randdeck, "random.shuffle()")
 
 entropy([1] * deck_size, "All 1's")
-entropy([secrets.randbelow(deck_size)
-    for i in range(deck_size)], "secrets.randbelow()")
+
+randdeck = deck[:]
+random.shuffle(randdeck, lambda: secrets.randbelow(1))
+entropy(randdeck, "random.shuffle(secrets.randbelow)")
 
 # Put cards into five piles
 # NB: this is not the most efficient code, but I'm writing it to learn different features of Python
@@ -51,7 +55,7 @@ entropy([deck10pi[p][c] for p in range(10)
     for c in range(len(deck10pi[p]))], "'into ten piles'")
 
 # Perfect riffle shuffle
-entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
+# entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
 
 
 # Show the combined plot!
