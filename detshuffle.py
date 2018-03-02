@@ -18,6 +18,12 @@ def perfect_riffle_shuffle(deck, times = 1):
     # TODO for sfl in range(times):
     # TODO return [deck[(c % 2) * 5 + c // 2] for c in range(len(deck))]
 
+def shuffle_into_piles(deck, piles):
+    """Shuffle cards into piles (non-randomly)"""
+    deck_copy = deck[:]
+    deck_piles = [deck_copy[i::piles] for i in range(piles)]
+    return [deck_piles[p][c] for p in range(piles)
+            for c in range(len(deck_piles[p]))]
 
 # Create a non-shuffled deck of deck_size cards
 deck_size = 52
@@ -33,26 +39,18 @@ entropy(randdeck, "random.shuffle()")
 
 entropy([1] * deck_size, "All 1's")
 
-randdeck = deck[:]
-random.shuffle(randdeck, lambda: secrets.randbelow(1))
-entropy(randdeck, "random.shuffle(secrets.randbelow)")
+# randdeck = deck[:]
+# random.shuffle(randdeck, lambda: secrets.randbelow(1))
+# entropy(randdeck, "random.shuffle(secrets.randbelow)")
 
 # Put cards into five piles
-# NB: this is not the most efficient code, but I'm writing it to learn different features of Python
-deck5pi = [[], [], [], [], []]
-for card in range(len(deck)):
-    deck5pi[card % 5].append(deck[card])
+entropy(shuffle_into_piles(deck, 5), "'into five piles'")
 
-entropy([deck5pi[p][c] for p in range(5)
-    for c in range(len(deck5pi[p]))], "'into five piles'")
+# Seven piles
+entropy(shuffle_into_piles(deck, 7), "'into seven piles'")
 
 # Ten piles
-deck10pi = [[], [], [], [], [], [], [], [], [], []]
-for card in range(len(deck)):
-    deck10pi[card % 10].append(deck[card])
-
-entropy([deck10pi[p][c] for p in range(10)
-    for c in range(len(deck10pi[p]))], "'into ten piles'")
+entropy(shuffle_into_piles(deck, 10), "'into ten piles'")
 
 # Perfect riffle shuffle
 # entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
