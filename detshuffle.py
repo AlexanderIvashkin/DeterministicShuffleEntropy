@@ -5,12 +5,13 @@ import random
 import secrets
 from bokeh.plotting import figure, output_file, show
 from bokeh.layouts import gridplot
+from itertools import chain
 
 plots = []
 def entropy(data, title):
     """Add a new circle plot into the list of Bokeh plots to visualise entropy"""
     plot = figure(title = title)
-    plot.circle([i for i in range(len(data))], data)
+    plot.circle([i + 1 for i in range(len(data))], data)
     plots.append(plot)
 
 def perfect_riffle_shuffle(deck, times = 1):
@@ -22,14 +23,14 @@ def shuffle_into_piles(deck, piles):
     """Shuffle cards into piles (non-randomly)"""
     deck_copy = deck[:]
     deck_piles = [deck_copy[i::piles] for i in range(piles)]
-    return [deck_piles[p][c] for p in range(piles)
-            for c in range(len(deck_piles[p]))]
+    return list(chain.from_iterable(deck_piles))
 
 # Create a non-shuffled deck of deck_size cards
-deck_size = 52
-deck = [i for i in range(1, deck_size + 1)]
+# A deck of three copies of each card (i.e. for LOTR LCG)
+deck_size = 50
+deck = [i // 3 + 1 for i in range(deck_size)]
 
-entropy(deck, "Ordered deck")
+entropy(deck, "Ordered LOTR deck")
 
 # To ensure same results on each run
 random.seed(666)
@@ -37,8 +38,7 @@ randdeck = deck[:]
 random.shuffle(randdeck)
 entropy(randdeck, "random.shuffle()")
 
-entropy([1] * deck_size, "All 1's")
-
+# TODO not working now
 # randdeck = deck[:]
 # random.shuffle(randdeck, lambda: secrets.randbelow(1))
 # entropy(randdeck, "random.shuffle(secrets.randbelow)")
