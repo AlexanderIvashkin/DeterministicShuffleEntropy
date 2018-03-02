@@ -1,4 +1,4 @@
-# Shuffle a deck of cards in a deterministic way and visualize entropy of such shuffling.
+# Shuffle a deck of cards in a few different ways and visualize entropy of such shuffling.
 # Alexander Ivashkin, 2018
 
 import random
@@ -38,10 +38,10 @@ randdeck = deck[:]
 random.shuffle(randdeck)
 entropy(randdeck, "random.shuffle()")
 
-# TODO not working now
-# randdeck = deck[:]
-# random.shuffle(randdeck, lambda: secrets.randbelow(1))
-# entropy(randdeck, "random.shuffle(secrets.randbelow)")
+# Shuffle using "more robust" RNG (secrets)
+randdeck = deck[:]
+random.shuffle(randdeck, lambda: secrets.randbelow(10000000) / 10000000)
+entropy(randdeck, "random.shuffle(secrets.randbelow)")
 
 # Put cards into five piles
 entropy(shuffle_into_piles(deck, 5), "'into five piles'")
