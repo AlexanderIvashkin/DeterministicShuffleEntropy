@@ -26,13 +26,13 @@ def shuffle_into_piles(deck, piles):
     return list(chain.from_iterable(deck_piles))
 
 # Create a non-shuffled deck of deck_size cards
-# A deck of three copies of each card (i.e. for LOTR LCG)
+# A consists of three copies of each card (i.e. for LOTR LCG)
 deck_size = 50
 deck = [i // 3 + 1 for i in range(deck_size)]
 
 entropy(deck, "Ordered LOTR deck")
 
-# To ensure same results on each run
+# Shuffle using random.shuffle()
 random.seed(666)
 randdeck = deck[:]
 random.shuffle(randdeck)
@@ -51,6 +51,9 @@ entropy(shuffle_into_piles(deck, 7), "'into seven piles'")
 
 # Ten piles
 entropy(shuffle_into_piles(deck, 10), "'into ten piles'")
+
+# Five piles... twice!
+entropy(shuffle_into_piles(shuffle_into_piles(deck, 5), 5), "'into five piles... twice'")
 
 # Perfect riffle shuffle
 # entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
