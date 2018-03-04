@@ -17,16 +17,31 @@ def entropy(data, title):
     plot.yaxis.axis_label = "card number"
     plots.append(plot)
 
+
+# TODO - math is wrong (duplicates a card for odd number of cards)
 def perfect_riffle_shuffle(deck, times = 1):
     """Run perfect (deterministic) riffle shuffle on the deck one or more times"""
-    # TODO for sfl in range(times):
-    # TODO return [deck[(c % 2) * 5 + c // 2] for c in range(len(deck))]
+    shuffled_deck = deck[:]
+    temp_deck = []
+
+    for sfl in range(times):
+        temp_deck = [shuffled_deck[i//2 + i%2 * len(shuffled_deck)//2]
+                for i in range(len(shuffled_deck))]
+        # I might have dropped the '== 1' but left it for clarity
+        if len(deck) % 2 == 1:
+            temp_deck.append(*shuffled_deck[-1:])
+        shuffled_deck = temp_deck[:]
+        temp_deck = []
+
+    return shuffled_deck
+
 
 def shuffle_into_piles(deck, piles):
     """Shuffle cards into piles (non-randomly)"""
     deck_copy = deck[:]
     deck_piles = [deck_copy[i::piles] for i in range(piles)]
     return list(chain.from_iterable(deck_piles))
+
 
 # Create a non-shuffled deck of deck_size cards
 # A consists of three copies of each card (i.e. for LOTR LCG)
@@ -58,9 +73,9 @@ entropy(shuffle_into_piles(deck, 10), "'into ten piles'")
 # Five piles... twice!
 entropy(shuffle_into_piles(shuffle_into_piles(deck, 5), 5), "'into five piles... twice'")
 
-# Perfect riffle shuffle
+# Perfect riffle shuffle TODO
 # entropy(perfect_riffle_shuffle(deck), "Perfect riffle shuffle (non-random)")
-
+# entropy(perfect_riffle_shuffle(deck, 3), "Perfect riffle shuffle (three times)")
 
 # Show the combined plot!
 output_file("entropy.html", mode="inline")
