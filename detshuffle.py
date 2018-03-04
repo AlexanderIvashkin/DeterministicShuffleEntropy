@@ -11,7 +11,8 @@ plots = []
 def entropy(data, title):
     """Add a new circle plot into the list of Bokeh plots to visualise entropy"""
     plot = figure(title = title)
-    plot.circle([i + 1 for i in range(len(data))], data)
+    plot.quad(top = data, bottom = 0, left = [i + 1 for i in range(len(data))],
+            right = [i + 2 for i in range(len(data))], line_color = "black")
     plot.xaxis.axis_label = "card in deck"
     plot.yaxis.axis_label = "card number"
     plots.append(plot)
