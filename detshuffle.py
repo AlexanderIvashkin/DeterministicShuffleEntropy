@@ -9,7 +9,7 @@ from itertools import chain
 
 plots = []
 def entropy(data, title):
-    """Add a new circle plot into the list of Bokeh plots to visualise entropy"""
+    """Add a new histogram plot into the list of Bokeh plots to visualise entropy"""
     plot = figure(title = title)
     plot.quad(top = data, bottom = 0, left = [i + 1 for i in range(len(data))],
             right = [i + 2 for i in range(len(data))], line_color = "black")
