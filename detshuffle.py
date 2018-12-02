@@ -1,6 +1,8 @@
 # Shuffle a deck of cards in a few different ways and visualize entropy of such shuffling.
 # Alexander Ivashkin, 2018
 
+# Version: 1.0.0-alpha
+
 import random
 import secrets
 from bokeh.plotting import figure, output_file, show
